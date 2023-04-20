@@ -2,12 +2,11 @@
 <p>This code generates a simple implementation of the RSA encryption algorithm to encrypt a message. RSA is an asymmetric encryption algorithm that relies on the difficulty of factoring large integers to ensure secure communication.</p>
 
 <h3>Usage</h3>
-<p>The code takes two arguments from the command line, the message to be encrypted and the number of bits in the generated keys. If no arguments are given, it uses a default message "Hello World" and sets the key size to 60 bits.
 
 To run the code, execute the following command:</p>
 
 ```
-python main.py [message] [key_size]
+python .\main\main_v2.py
 ```
 
 <p>where message is the message to be encrypted (optional) and key_size is the number of bits in the generated keys (optional).</p>
