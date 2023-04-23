@@ -3,16 +3,17 @@
 
 <h3>Installation and Setup</h3>
 
-1.Clone the repository to your local machine using the command: git clone https://github.com/username/repo-name.git
-2.Navigate to the project directory and create a virtual environment: python3 -m venv env
-3.Activate the virtual environment: source env/bin/activate
-4.Install the required packages: pip install -r requirements.txt
-5.Create a .env file in the project directory and add the following environment variables:
+1.Clone the repository to your local machine using the command: git clone [https://github.com/username/repo-name.git](https://github.com/Loxyez/email-with-digital-sinature-service.git)
+<br>2.Navigate to the project directory and create a virtual environment: python3 -m venv env
+<br>3.Activate the virtual environment: source env/bin/activate
+<br>4.Install the required packages: pip install -r requirements.txt
+<br>5.Create a .env file in the project directory and add the following environment variables:
 <li>sender_email: the email address of the sender</li>
 <li>sender_password: the password for the sender's email account</li>
 <li>receiver_email: the email address of the recipient</li>
 <li>receiver_password: the password for the recipient's email account</li>
-Run the server: ```uvicorn main:app --host 0.0.0.0 --reload```
+6.Run the server:</li> 
+```uvicorn main:app --host 0.0.0.0 --reload```
 
 <p>where message is the message to be encrypted (optional) and key_size is the number of bits in the generated keys (optional).</p>
 <hr>
