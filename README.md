@@ -1,6 +1,20 @@
 <h1>Email Signature Verification System</h1>
 <p>This is a simple system to send and receive emails with a digital signature to verify their authenticity. The system uses Python and the FastAPI framework for the backend and Google's SMTP and IMAP email servers for sending and receiving emails.</p>
 
+<h3>Algorithm</h3>
+<p>The email signature verification system uses the RSA algorithm to generate digital signatures for emails. The RSA algorithm is a widely used public key encryption algorithm that uses two keys, a public key and a private key, to encrypt and decrypt data. In this system, the sender generates a digital signature for the email using their private key, and the receiver verifies the signature using the sender's public key.</p>
+<p>Here's how the algorithm works:</p>
+<ol>
+<li>The sender generates a public and private key pair using the RSA algorithm. The public key is shared with the receiver, and the private key is kept secret.</li>
+<li>To generate a digital signature for an email, the sender applies a hash function (SHA-256) to the plaintext message, and then encrypts the hash using their private key. This creates a digital signature that can only be decrypted using the sender's public key.</li>
+<li>The sender attaches the digital signature to the email and sends it to the receiver.</li>
+<li>When the receiver receives the email, they extract the plaintext message and the digital signature from the email.</li>
+<li>The receiver applies the same hash function (SHA-256) to the plaintext message that the sender used to generate the digital signature. This produces a hash value for the plaintext message.</li>
+<li>The receiver uses the sender's public key to decrypt the digital signature. This produces a hash value for the plaintext message that should be the same as the hash value produced in step 5 if the message has not been tampered with.</li>
+<li>The receiver compares the hash value produced in step 5 to the hash value produced in step 6. If the values match, the message has not been tampered with, and the receiver can be confident that the message came from the sender and has not been altered in transit. If the values do not match, the message may have been tampered with, and the receiver should not trust the message.</li>
+</ol>
+<p>That's a high-level overview of how the RSA algorithm is used to generate and verify digital signatures in the email signature verification system.</p>
+
 <h3>Installation and Setup</h3>
 
 1.Clone the repository to your local machine using the command: git clone [https://github.com/username/repo-name.git](https://github.com/Loxyez/email-with-digital-sinature-service.git)
