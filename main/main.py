@@ -24,5 +24,5 @@ async def send_email(text: str):
 
 @app.get("/receive-email")
 async def receive_email(text: str, signature: str):
-    status, signature = E.receive_email(text, signature)
-    return {"status": status, "signature": signature}
+    status, message = E.receive_email(text, signature)
+    return {"status": status, "message": message}
