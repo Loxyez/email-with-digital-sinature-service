@@ -1,13 +1,18 @@
-<h1>RSA Encryption Algorithm</h1>
-<p>This code generates a simple implementation of the RSA encryption algorithm to encrypt a message. RSA is an asymmetric encryption algorithm that relies on the difficulty of factoring large integers to ensure secure communication.</p>
+<h1>Email Signature Verification System</h1>
+<p>This is a simple system to send and receive emails with a digital signature to verify their authenticity. The system uses Python and the FastAPI framework for the backend and Google's SMTP and IMAP email servers for sending and receiving emails.</p>
 
-<h3>Usage</h3>
+<h3>Installation and Setup</h3>
 
-To run the code, execute the following command:</p>
-
-```
-python .\main\main_v2.py
-```
+1.Clone the repository to your local machine using the command: git clone https://github.com/username/repo-name.git
+2.Navigate to the project directory and create a virtual environment: python3 -m venv env
+3.Activate the virtual environment: source env/bin/activate
+4.Install the required packages: pip install -r requirements.txt
+5.Create a .env file in the project directory and add the following environment variables:
+<li>sender_email: the email address of the sender</li>
+<li>sender_password: the password for the sender's email account</li>
+<li>receiver_email: the email address of the recipient</li>
+<li>receiver_password: the password for the recipient's email account</li>
+Run the server: ```uvicorn main:app --host 0.0.0.0 --reload```
 
 <p>where message is the message to be encrypted (optional) and key_size is the number of bits in the generated keys (optional).</p>
 <hr>
