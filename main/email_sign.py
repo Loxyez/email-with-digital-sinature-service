@@ -14,6 +14,9 @@ from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto import Random
 import base64
+import re
+from Crypto.PublicKey import RSA
+from Crypto.IO import PEM
 
 # Hyper Parameter
 length = 1024
@@ -33,7 +36,6 @@ def generate_key():
     with open("./public_key.pem", "wb") as key_file:
         key_file.write(public_key.exportKey())
 
-
 def sign_email(msg):
     """
     This function signs an email message with the sender's private key.
@@ -47,6 +49,20 @@ def sign_email(msg):
     
     return base64.b64encode(private_key.sign(msg.encode(), padding.PKCS1v15(), hashes.SHA256()))
 
+def encrypt(rsa_publickey, plain_text):
+    cipher = PKCS1_OAEP.new(rsa_publickey)
+    ciphertext = cipher.encrypt(plain_text)
+    plaintext = base64.b64encode(ciphertext)
+    return plaintext
+
+def decrypt(rsa_privatekey, b64cipher):
+    """
+    This function decrypts the message using the recipient's private key.
+    """
+    decoded_ciphertext = base64.b64decode(b64cipher)
+    cipher = PKCS1_OAEP.new(rsa_privatekey)
+    plaintext = cipher.decrypt(decoded_ciphertext)
+    return plaintext
 
 def verify_signature(msg, signature, public_key):
     """
@@ -73,27 +89,23 @@ def send_email(receiver, subject, body):
     # Create a secure SSL context
     context = ssl.create_default_context()
 
-    # Create the message
-    message = f"{body}"
-
     # Sign the message
-    signature = sign_email(message)
+    signature = sign_email(body)
     
-    message += f"\nSignature: {signature}"
+    message = f"{body}\n\nSignature: {signature}"
 
     # Try to log in to server and send email
     try:
         server = smtplib.SMTP_SSL(smtp_server, port, context=context)
         server.login(sender_email, sender_password)
-        server.sendmail(sender_email, receiver, signature)
+        server.sendmail(sender_email, receiver, message)
         print("Email sent!")
-        time.sleep(10)
     except Exception as e:
         print(f"Error: {e}")
     finally:
         server.quit()
 
-def receive_email(message):
+def receive_email(message, sig):
     """
     This function receives emails from the recipient's mailbox using IMAP.
     """
@@ -116,20 +128,30 @@ def receive_email(message):
         msg = email.message_from_bytes(data[0][1])
         
         with open("./public_key.pem", "rb") as key_file:
-            public_key = serialization.load_pem_public_key(
-                key_file.read(),
-                backend=default_backend()
-            )
+            public_key = key_file.read()
+            
+        with open("./private_key.pem", "rb") as key_file:
+            private_key = key_file.read()
         
-        verify = verify_signature(msg.get_payload(), message, public_key)
+        verify = verify_signature(sig, message, public_key)
         
+        public_key_obj = RSA.importKey(public_key)
+        private_key_obj = RSA.importKey(private_key)
+        enc_msg = encrypt(public_key_obj, message.encode('utf-8'))
+        deco = decrypt(private_key_obj, enc_msg)
         if verify:
-            print("Signature is valid")
+            mail.close()
+            mail.logout()
+            return "Signature is valid", deco.decode('utf-8')
         else:
-            print("Signature is invalid")
-        
-        if msg['From'] == os.getenv("sender_email").lower():
-            break
+            mail.close()
+            mail.logout()
+            return "Signature is invalid", None
 
-    mail.close()
-    mail.logout()
+
+if __name__ == "__main__":
+    generate_key()
+    
+    send_email(os.getenv("receiver_email"), "Hello", "Hello from the other side!")
+    
+    receive_email("Hello from the other side!", "Hello")

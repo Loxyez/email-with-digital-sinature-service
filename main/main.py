@@ -13,18 +13,16 @@ load_dotenv()
 def read_root():
     return {"Hello": "World"}
 
-@app.post("/send-email/{body}")
-async def send_email(request: Request):
-    data = await request.json()
+@app.post("/send-email/")
+async def send_email(text: str):
     E.generate_key()
     receiver_email = os.getenv("receiver_email")
     subject = "Hello from the other side!"
-    body = data["body"]
+    body = text
     E.send_email(receiver_email, subject, body)
     return {"message": "Email sent successfully"}
 
 @app.get("/receive-email")
-async def send_email(request: Request):
-    data = await request.json()
-    E.receive_email(data["body"])
-    return {"message": "Email received successfully"}
+async def receive_email(text: str, signature: str):
+    status, signature = E.receive_email(text, signature)
+    return {"status": status, "signature": signature}
