@@ -17,7 +17,7 @@
 
 <h3>Installation and Setup</h3>
 
-1.Clone the repository to your local machine using the command: git clone [https://github.com/username/repo-name.git](https://github.com/Loxyez/email-with-digital-sinature-service.git)
+1.Clone the repository to your local machine using the command: git clone https://github.com/Loxyez/email-with-digital-sinature-service.git
 <br>2.Navigate to the project directory and create a virtual environment: python3 -m venv env
 <br>3.Activate the virtual environment: source env/bin/activate
 <br>4.Install the required packages: pip install -r requirements.txt
