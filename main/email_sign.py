@@ -125,7 +125,6 @@ def receive_email(message, sig):
         typ, data = mail.fetch(num, "(RFC822)")
 
         # Parse the email message
-        msg = email.message_from_bytes(data[0][1])
         
         with open("./public_key.pem", "rb") as key_file:
             public_key = key_file.read()
@@ -147,11 +146,3 @@ def receive_email(message, sig):
             mail.close()
             mail.logout()
             return "Signature is invalid", None
-
-
-if __name__ == "__main__":
-    generate_key()
-    
-    send_email(os.getenv("receiver_email"), "Hello", "Hello from the other side!")
-    
-    receive_email("Hello from the other side!", "Hello")
